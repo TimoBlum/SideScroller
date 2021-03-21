@@ -1,5 +1,6 @@
 import pygame, random
 pygame.init()
+pygame.font.init()
 
 """This is a about our dog Ficsi who hates Lemons and therefore needs to dodge them. All drawings
     of Ficsi were made by my sister so this is our joint project :D"""
@@ -28,6 +29,14 @@ bgs = [pygame.image.load("Bgs/bg1"), pygame.image.load("Bgs/bg2"), pygame.image.
        pygame.image.load("Bgs/bg13"), pygame.image.load("Bgs/bg14"), pygame.image.load("Bgs/bg15"),
        pygame.image.load("Bgs/bg16"), pygame.image.load("Bgs/bg17"), pygame.image.load("Bgs/bg18"),
        pygame.image.load("Bgs/bg19"), pygame.image.load("Bgs/bg20")]
+sky = [pygame.image.load("Bgs/sky1"), pygame.image.load("Bgs/sky2"), pygame.image.load("Bgs/sky3"),
+       pygame.image.load("Bgs/sky4"), pygame.image.load("Bgs/sky5"), pygame.image.load("Bgs/sky6"),
+       pygame.image.load("Bgs/sky7"), pygame.image.load("Bgs/sky8"), pygame.image.load("Bgs/sky9"),
+       pygame.image.load("Bgs/sky10"), pygame.image.load("Bgs/sky11"), pygame.image.load("Bgs/sky12"),
+       pygame.image.load("Bgs/sky13"), pygame.image.load("Bgs/sky14"), pygame.image.load("Bgs/sky15"),
+       pygame.image.load("Bgs/sky16"), pygame.image.load("Bgs/sky17"), pygame.image.load("Bgs/sky18"),
+       pygame.image.load("Bgs/sky19"), pygame.image.load("Bgs/sky20")]
+lemonimg = pygame.image.load("lemon")
 isJump = False
 isDuck = False
 lost = False
@@ -36,12 +45,10 @@ Frame = 0
 jumpFrame = 0
 difficulty = 10
 difficulty2 = 60
-font = pygame.font.Font('freesansbold.ttf', 32)
-text = font.render("Game Over.", True, (255, 0, 0))
-textRect = text.get_rect()
-textRect.center = (x // 2, y // 2)
 bg = pygame.Rect(0, 0, x, y)
+skyrect = pygame.Rect(0, 0, x, y)
 bgnum = 0
+skynum = 0
 
 
 def foo(Frame, frequency, lst, num):
@@ -143,7 +150,8 @@ class Lemon:
         self.x -= difficulty
 
     def draw(self):
-        pygame.draw.rect(win, (255, 0, 0), self.rectangle)
+        global lemonimg
+        win.blit(lemonimg, self.rectangle)
 
 
 Lemons = [Lemon(random.randint(1, 3))]
@@ -151,11 +159,13 @@ ficsi = Ficsi(100)
 
 
 def redrawWin():
-    global Frame, run, lost, difficulty, difficulty2, bgnum
+    global Frame, run, lost, difficulty, difficulty2, bgnum, skynum
     win.fill((255, 255, 255))
-    bgnum = foo(Frame, 2, bgs, bgnum)
-    win.blit(bgs[bgnum], bg)
     if not lost:
+        skynum = foo(Frame, 6, sky, skynum)
+        bgnum = foo(Frame, 2, bgs, bgnum)
+        win.blit(sky[skynum], skyrect)
+        win.blit(bgs[bgnum], bg)
         for lemon in Lemons:
             lemon.move()
             lemon.update()
@@ -177,6 +187,12 @@ def redrawWin():
             difficulty2 -= 5
             print(difficulty2)
     if lost:
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render("Score: "+str(Frame//10), True, (255, 255, 0))
+        textRect = text.get_rect()
+        textRect.center = (x // 2, y // 2)
+        win.blit(sky[skynum], skyrect)
+        win.blit(bgs[bgnum], bg)
         win.blit(text, textRect)
         pygame.display.update()
 
