@@ -21,7 +21,8 @@ jumpFicsiImg = [pygame.image.load("FicsiJump/FicsiJump1"),
                 pygame.image.load("FicsiJump/FicsiJump3"), pygame.image.load("FicsiJump/FicsiJump4"),
                 pygame.image.load("FicsiJump/FicsiJump5"), pygame.image.load("FicsiJump/FicsiJump6"),
                 pygame.image.load("FicsiJump/FicsiJump7"), pygame.image.load("FicsiJump/FicsiJump9")]
-duckFicsiImg = []
+duckFicsiImg = [pygame.image.load("FicsiDuck/duck1"), pygame.image.load("FicsiDuck/duck2"),
+                pygame.image.load("FicsiDuck/duck3")]
 bgs = [pygame.image.load("Bgs/bg1"), pygame.image.load("Bgs/bg2"), pygame.image.load("Bgs/bg3"),
        pygame.image.load("Bgs/bg14"), pygame.image.load("Bgs/bg5"), pygame.image.load("Bgs/bg6"),
        pygame.image.load("Bgs/bg17"), pygame.image.load("Bgs/bg8"), pygame.image.load("Bgs/bg9"),
@@ -47,6 +48,7 @@ difficulty = 10
 difficulty2 = 60
 bg = pygame.Rect(0, 0, x, y)
 skyrect = pygame.Rect(0, 0, x, y)
+ducknum = 0
 bgnum = 0
 skynum = 0
 
@@ -82,14 +84,15 @@ class Ficsi:
         self.jnum = 0
 
     def draw(self):
-        global jumpFrame
+        global jumpFrame, ducknum
         if isJump:
             self.jnum = foo(jumpFrame, 4, jumpFicsiImg, self.jnum)
             print("JUMPED!   dog Nr. ", self.jnum)
             win.blit(jumpFicsiImg[self.jnum], self.rectangle)
             jumpFrame += 1
         elif isDuck:
-            pygame.draw.rect(win, (0, 255, 0), self.rectangle)
+            ducknum = foo(Frame, 2, duckFicsiImg, ducknum)
+            win.blit(duckFicsiImg[ducknum], self.rectangle)
             jumpFrame = 0
             self.jnum = 0
         else:
